@@ -27,7 +27,7 @@
         "illuminate/support": "^10.0|^11.0|^12.0"
     },
     "require-dev": {
-        "buckhamduffy/coding-standards": "^7",
+        "buckhamduffy/coding-standards": "^6|^7",
         "larastan/larastan": "^2.7.0|^3.0",
         "nunomaduro/collision": "^7.0|^8.0",
         "orchestra/testbench": "^8.0|^9.0|^10.0",

@@ -2,11 +2,12 @@
 
 namespace BuckhamDuffy\Expressions\Operator\Comparison;
 
+use Illuminate\Contracts\Database\Query\ConditionExpression;
 use Illuminate\Database\Grammar;
 use Illuminate\Contracts\Database\Query\Expression;
 use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
-class OrValues implements Expression
+class OrValues implements ConditionExpression
 {
     use StringizeExpression;
 
