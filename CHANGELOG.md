@@ -1,6 +1,12 @@
 # Changelog
 
 - - -
+## v1.6.0 - 2025-07-03
+#### Features
+- fork repository, add new expressions - (7dc63e9) - Aaron Florey
+
+- - -
+
 
 ## [1.5.0] - 2025-02-14
 ### Added
