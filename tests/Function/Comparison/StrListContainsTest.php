@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\Comparison\StrListContains;
+use BuckhamDuffy\Expressions\Function\Comparison\StrListContains;
 
 it('can check for existence of a column within a column string list')
     ->expect(new StrListContains('haystack', 'needle'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('haystack');
         $table->string('needle');
     }, options: [
@@ -31,7 +31,7 @@ it('can check for existence of an expression within an expression string list')
 
 it('can check for existence of a column within an expression string list')
     ->expect(new StrListContains(new Expression("'a,b,c'"), 'needle'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('needle');
     }, options: [
         'sqlsrv' => ['position' => 'where'],
@@ -43,7 +43,7 @@ it('can check for existence of a column within an expression string list')
 
 it('can check for existence of an expression within a column string list')
     ->expect(new StrListContains('haystack', new Expression("'a'")))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('haystack');
     }, options: [
         'sqlsrv' => ['position' => 'where'],

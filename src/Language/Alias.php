@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Language;
+namespace BuckhamDuffy\Expressions\Language;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class Alias implements Expression
 {
@@ -17,7 +17,8 @@ class Alias implements Expression
     public function __construct(
         private readonly string|Expression $expression,
         private readonly string $name,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar): string
     {
@@ -28,6 +29,6 @@ class Alias implements Expression
             'sqlsrv' => '['.str_replace(']', ']]', $this->name).']',
         };
 
-        return "{$expression} as {$name}";
+        return \sprintf('%s as %s', $expression, $name);
     }
 }

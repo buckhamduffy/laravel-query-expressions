@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\String\Concat;
+use BuckhamDuffy\Expressions\Function\String\Concat;
 
 it('can concat multiple columns')
     ->expect(new Concat(['val1', 'val2', 'val3']))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('val1');
         $table->string('val2');
         $table->string('val3');
@@ -28,7 +28,7 @@ it('can concat multiple expressions')
 
 it('can concat multiple columns and expressions')
     ->expect(new Concat(['val1', 'val2', new Expression("'c'")]))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('val1');
         $table->string('val2');
     })

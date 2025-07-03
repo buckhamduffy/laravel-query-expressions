@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\Aggregate\Sum;
+use BuckhamDuffy\Expressions\Function\Aggregate\Sum;
 
 it('can aggregate a column by SUM')
     ->expect(new Sum('val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('sum(`val`)')

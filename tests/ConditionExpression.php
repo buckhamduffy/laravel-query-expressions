@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Tests;
+namespace BuckhamDuffy\Expressions\Tests;
 
-use Illuminate\Contracts\Database\Query\ConditionExpression as ConditionExpressionContract;
 use Illuminate\Database\Query\Expression;
+use Illuminate\Contracts\Database\Query\ConditionExpression as ConditionExpressionContract;
 
-class ConditionExpression extends Expression implements ConditionExpressionContract {}
+class ConditionExpression extends Expression implements ConditionExpressionContract
+{
+}

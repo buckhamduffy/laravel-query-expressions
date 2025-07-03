@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\Aggregate;
+namespace BuckhamDuffy\Expressions\Function\Aggregate;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class CountFilter implements Expression
 {
@@ -16,16 +16,17 @@ class CountFilter implements Expression
 
     public function __construct(
         private readonly Expression $filter,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar): string
     {
         $filter = $this->stringize($grammar, $this->filter);
 
         return match ($this->identify($grammar)) {
-            'mariadb', 'mysql' => "sum({$filter})",
-            'pgsql', 'sqlite' => "count(*) filter (where {$filter})",
-            'sqlsrv' => "sum(case when {$filter} then 1 else 0 end)",
+            'mariadb', 'mysql' => \sprintf('sum(%s)', $filter),
+            'pgsql', 'sqlite' => \sprintf('count(*) filter (where %s)', $filter),
+            'sqlsrv' => \sprintf('sum(case when %s then 1 else 0 end)', $filter),
         };
     }
 }

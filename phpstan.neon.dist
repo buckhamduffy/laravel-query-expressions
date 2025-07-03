@@ -5,3 +5,7 @@ parameters:
     level: max
     paths:
         - src
+
+    ignoreErrors:
+        - identifier: match.alwaysTrue
+        - identifier: new.static

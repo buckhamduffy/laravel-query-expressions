@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\String;
+namespace BuckhamDuffy\Expressions\Function\String;
 
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Function\Conditional\ManyArgumentsExpression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Function\Conditional\ManyArgumentsExpression;
 
 class Concat extends ManyArgumentsExpression
 {
@@ -14,11 +14,9 @@ class Concat extends ManyArgumentsExpression
 
     public function getValue(Grammar $grammar): string
     {
-        $expressions = $this->getExpressions($grammar);
-
         return match ($this->identify($grammar)) {
-            'mariadb', 'mysql', 'sqlsrv' => sprintf('(concat(%s))', implode(',', $expressions)),
-            'pgsql', 'sqlite' => sprintf('(%s)', implode('||', $expressions)),
+            'mariadb', 'mysql', 'sqlsrv' => \sprintf('(concat(%s))', $this->join($grammar, $this->expressions, ',')),
+            'pgsql', 'sqlite' => \sprintf('(%s)', $this->join($grammar, $this->expressions, '||')),
         };
     }
 }

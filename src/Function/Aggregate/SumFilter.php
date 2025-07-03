@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\Aggregate;
+namespace BuckhamDuffy\Expressions\Function\Aggregate;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class SumFilter implements Expression
 {
@@ -17,7 +17,8 @@ class SumFilter implements Expression
     public function __construct(
         private readonly string|Expression $value,
         private readonly Expression $filter,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar): string
     {
@@ -25,8 +26,8 @@ class SumFilter implements Expression
         $filter = $this->stringize($grammar, $this->filter);
 
         return match ($this->identify($grammar)) {
-            'mariadb', 'mysql', 'sqlsrv' => "sum(case when {$filter} then {$value} else 0 end)",
-            'pgsql', 'sqlite' => "sum({$value}) filter (where {$filter})",
+            'mariadb', 'mysql', 'sqlsrv' => \sprintf('sum(case when %s then %s else 0 end)', $filter, $value),
+            'pgsql', 'sqlite' => \sprintf('sum(%s) filter (where %s)', $value, $filter),
         };
     }
 }

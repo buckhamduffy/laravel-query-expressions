@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Bitwise;
+namespace BuckhamDuffy\Expressions\Operator\Bitwise;
 
-use Tpetry\QueryExpressions\Operator\OperatorExpression;
+use BuckhamDuffy\Expressions\Operator\OperatorExpression;
 
 class BitAnd extends OperatorExpression
 {

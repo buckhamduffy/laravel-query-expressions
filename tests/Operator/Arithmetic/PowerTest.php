@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Arithmetic\Power;
+use BuckhamDuffy\Expressions\Operator\Arithmetic\Power;
 
 it('can power two columns')
     ->expect(new Power('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -27,7 +27,7 @@ it('can power two expressions')
 
 it('can power an expression and a column')
     ->expect(new Power('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('power(`val`, 0)')
@@ -37,7 +37,7 @@ it('can power an expression and a column')
 
 it('can power a column and an expression')
     ->expect(new Power(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('power(0, `val`)')
@@ -47,7 +47,7 @@ it('can power a column and an expression')
 
 it('can power variadic values')
     ->expect(new Power(new Expression(0), 'val1', 'val2', new Expression(1)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })

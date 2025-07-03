@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Logical;
+namespace BuckhamDuffy\Expressions\Operator\Logical;
 
-use Illuminate\Contracts\Database\Query\ConditionExpression;
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\ConditionExpression;
 
 class CondXor implements ConditionExpression
 {
@@ -19,7 +19,8 @@ class CondXor implements ConditionExpression
         private readonly Expression $value1,
         private readonly Expression $value2,
 
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar)
     {

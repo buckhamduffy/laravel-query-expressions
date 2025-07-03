@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\String;
+namespace BuckhamDuffy\Expressions\Function\String;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class Upper implements Expression
 {
@@ -16,15 +16,16 @@ class Upper implements Expression
 
     public function __construct(
         private readonly string|Expression $expression,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar): string
     {
         $expression = $this->stringize($grammar, $this->expression);
 
         return match ($this->identify($grammar)) {
-            'mariadb', 'mysql', 'sqlite' => "(upper({$expression}))",
-            'pgsql', 'sqlsrv' => "upper({$expression})",
+            'mariadb', 'mysql', 'sqlite' => \sprintf('(upper(%s))', $expression),
+            'pgsql', 'sqlsrv' => \sprintf('upper(%s)', $expression),
         };
     }
 }

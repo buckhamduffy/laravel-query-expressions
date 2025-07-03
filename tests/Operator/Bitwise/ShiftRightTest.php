@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Bitwise\ShiftRight;
+use BuckhamDuffy\Expressions\Operator\Bitwise\ShiftRight;
 
 it('can bitwise shift right two columns')
     ->expect(new ShiftRight('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -27,7 +27,7 @@ it('can bitwise shift right two expressions')
 
 it('can bitwise shift right an expression and a column')
     ->expect(new ShiftRight('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('floor(`val` / power(2, 0))')
@@ -37,7 +37,7 @@ it('can bitwise shift right an expression and a column')
 
 it('can bitwise shift right a column and an expression')
     ->expect(new ShiftRight(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('floor(0 / power(2, `val`))')

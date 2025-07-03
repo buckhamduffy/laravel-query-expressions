@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\Aggregate;
+namespace BuckhamDuffy\Expressions\Function\Aggregate;
 
 class Sum extends AggregateExpression
 {

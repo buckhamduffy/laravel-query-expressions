@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\Conditional;
+namespace BuckhamDuffy\Expressions\Function\Conditional;
 
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
 
 class Greatest extends ManyArgumentsExpression
 {
@@ -13,16 +13,18 @@ class Greatest extends ManyArgumentsExpression
 
     public function getValue(Grammar $grammar): string
     {
-        $expressions = $this->getExpressions($grammar);
+        $expressions = $this->map($grammar, $this->expressions);
+
         if ($this->identify($grammar) === 'sqlsrv') {
-            $expressions = array_map(fn ($expression) => "({$expression})", $expressions);
+            $expressions = array_map(fn ($expression) => \sprintf('(%s)', $expression), $expressions);
         }
+
         $expressionsStr = implode(', ', $expressions);
 
         return match ($this->identify($grammar)) {
-            'mariadb', 'mysql', 'pgsql' => "greatest({$expressionsStr})",
-            'sqlite' => "max({$expressionsStr})",
-            'sqlsrv' => "(select max(n) from (values {$expressionsStr}) as v(n))",
+            'mariadb', 'mysql', 'pgsql' => \sprintf('greatest(%s)', $expressionsStr),
+            'sqlite' => \sprintf('max(%s)', $expressionsStr),
+            'sqlsrv' => \sprintf('(select max(n) from (values %s) as v(n))', $expressionsStr),
         };
     }
 }

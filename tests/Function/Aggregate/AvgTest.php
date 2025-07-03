@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\Aggregate\Avg;
+use BuckhamDuffy\Expressions\Function\Aggregate\Avg;
 
 it('can aggregate a column by AVG')
     ->expect(new Avg('val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('avg(`val`)')

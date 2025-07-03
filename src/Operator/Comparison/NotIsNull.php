@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Comparison;
+namespace BuckhamDuffy\Expressions\Operator\Comparison;
 
-use Illuminate\Contracts\Database\Query\ConditionExpression;
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\ConditionExpression;
 
 class NotIsNull implements ConditionExpression
 {
@@ -16,7 +16,8 @@ class NotIsNull implements ConditionExpression
     public function __construct(
         private readonly string|Expression $value,
 
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar)
     {

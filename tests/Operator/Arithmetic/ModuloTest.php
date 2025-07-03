@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Arithmetic\Modulo;
+use BuckhamDuffy\Expressions\Operator\Arithmetic\Modulo;
 
 it('can modulo two columns')
     ->expect(new Modulo('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -27,7 +27,7 @@ it('can modulo two expressions')
 
 it('can modulo an expression and a column')
     ->expect(new Modulo('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(`val` % 0)')
@@ -37,7 +37,7 @@ it('can modulo an expression and a column')
 
 it('can modulo a column and an expression')
     ->expect(new Modulo(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(0 % `val`)')
@@ -47,7 +47,7 @@ it('can modulo a column and an expression')
 
 it('can modulo variadic values')
     ->expect(new Modulo(new Expression(0), 'val1', 'val2', new Expression(1)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })

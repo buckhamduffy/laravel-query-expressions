@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Language;
+namespace BuckhamDuffy\Expressions\Language;
 
-use Illuminate\Contracts\Database\Query\Expression;
-use Illuminate\Database\Grammar;
 use RuntimeException;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Database\Grammar;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 /**
  * @phpstan-type CastType 'bigint'|'double'|'float'|'int'
@@ -19,12 +19,13 @@ class Cast implements Expression
     use StringizeExpression;
 
     /**
-     * @param  CastType  $type
+     * @param CastType $type
      */
     public function __construct(
         private readonly string|Expression $expression,
         private readonly string $type,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar): string
     {
@@ -32,7 +33,7 @@ class Cast implements Expression
 
         return match ($this->identify($grammar)) {
             'mariadb', 'mysql' => $this->castMysql($expression),
-            'pgsql' => $this->castPgsql($expression),
+            'pgsql'  => $this->castPgsql($expression),
             'sqlite' => $this->castSqlite($expression),
             'sqlsrv' => $this->castSqlsrv($expression),
         };
@@ -46,7 +47,7 @@ class Cast implements Expression
         return match ($this->type) {
             'bigint', 'int' => "cast({$expression} as signed)",
             'float', 'double' => "(({$expression})*1.0)",
-            default => throw new RuntimeException("Unknown cast type '{$this->type}'."), // @phpstan-ignore match.unreachable
+            default => throw new RuntimeException("Unknown cast type '{$this->type}'."),
         };
     }
 
@@ -54,10 +55,10 @@ class Cast implements Expression
     {
         return match ($this->type) {
             'bigint' => "cast({$expression} as bigint)",
-            'float' => "cast({$expression} as real)",
+            'float'  => "cast({$expression} as real)",
             'double' => "cast({$expression} as double precision)",
-            'int' => "cast({$expression} as int)",
-            default => throw new RuntimeException("Unknown cast type '{$this->type}'."), // @phpstan-ignore match.unreachable
+            'int'    => "cast({$expression} as int)",
+            default  => throw new RuntimeException("Unknown cast type '{$this->type}'."),
         };
     }
 
@@ -66,7 +67,7 @@ class Cast implements Expression
         return match ($this->type) {
             'bigint', 'int' => "cast({$expression} as integer)",
             'float', 'double' => "cast({$expression} as real)",
-            default => throw new RuntimeException("Unknown cast type '{$this->type}'."), // @phpstan-ignore match.unreachable
+            default => throw new RuntimeException("Unknown cast type '{$this->type}'."),
         };
     }
 
@@ -74,10 +75,10 @@ class Cast implements Expression
     {
         return match ($this->type) {
             'bigint' => "cast({$expression} as bigint)",
-            'float' => "cast({$expression} as float(24))",
+            'float'  => "cast({$expression} as float(24))",
             'double' => "cast({$expression} as float(53))",
-            'int' => "(({$expression})*1)",
-            default => throw new RuntimeException("Unknown cast type '{$this->type}'."), // @phpstan-ignore match.unreachable
+            'int'    => "(({$expression})*1)",
+            default  => throw new RuntimeException("Unknown cast type '{$this->type}'."),
         };
     }
 }

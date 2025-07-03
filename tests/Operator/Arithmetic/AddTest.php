@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Arithmetic\Add;
+use BuckhamDuffy\Expressions\Operator\Arithmetic\Add;
 
 it('can add two columns')
     ->expect(new Add('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -27,7 +27,7 @@ it('can add two expressions')
 
 it('can add an expression and a column')
     ->expect(new Add('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(`val` + 0)')
@@ -37,7 +37,7 @@ it('can add an expression and a column')
 
 it('can add a column and an expression')
     ->expect(new Add(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(0 + `val`)')
@@ -47,7 +47,7 @@ it('can add a column and an expression')
 
 it('can add variadic values')
     ->expect(new Add(new Expression(0), 'val1', 'val2', new Expression(1)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })

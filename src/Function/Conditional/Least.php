@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\Conditional;
+namespace BuckhamDuffy\Expressions\Function\Conditional;
 
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
 
 class Least extends ManyArgumentsExpression
 {
@@ -13,16 +13,18 @@ class Least extends ManyArgumentsExpression
 
     public function getValue(Grammar $grammar): string
     {
-        $expressions = $this->getExpressions($grammar);
         if ($this->identify($grammar) === 'sqlsrv') {
-            $expressions = array_map(fn ($expression) => "({$expression})", $expressions);
+            $expressions = array_map(fn ($expression) => \sprintf('(%s)', $expression), $this->map($grammar, $this->expressions));
+        } else {
+            $expressions = $this->map($grammar, $this->expressions);
         }
+
         $expressionsStr = implode(', ', $expressions);
 
         return match ($this->identify($grammar)) {
-            'mariadb', 'mysql', 'pgsql' => "least({$expressionsStr})",
-            'sqlite' => "min({$expressionsStr})",
-            'sqlsrv' => "(select min(n) from (values {$expressionsStr}) as v(n))",
+            'mariadb', 'mysql', 'pgsql' => \sprintf('least(%s)', $expressionsStr),
+            'sqlite' => \sprintf('min(%s)', $expressionsStr),
+            'sqlsrv' => \sprintf('(select min(n) from (values %s) as v(n))', $expressionsStr),
         };
     }
 }

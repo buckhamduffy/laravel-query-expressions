@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator;
+namespace BuckhamDuffy\Expressions\Operator;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 /**
  * @internal
@@ -18,11 +18,17 @@ abstract class OperatorExpression implements Expression
     public function __construct(
         private readonly string|Expression $value1,
         private readonly string|Expression $value2,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar): string
     {
-        return "({$this->stringize($grammar, $this->value1)} {$this->operator()} {$this->stringize($grammar, $this->value2)})";
+        return \sprintf(
+            '(%s %s %s)',
+            $this->stringize($grammar, $this->value1),
+            $this->operator(),
+            $this->stringize($grammar, $this->value2)
+        );
     }
 
     abstract protected function operator(): string;

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\Aggregate\SumFilter;
+use BuckhamDuffy\Expressions\Function\Aggregate\SumFilter;
 
 it('can aggregate a column by SUM with a filter')
     ->expect(new SumFilter('val1', new Expression('val2 = 1')))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -19,7 +19,7 @@ it('can aggregate a column by SUM with a filter')
 
 it('can aggregate an expression by SUM with a filter')
     ->expect(new SumFilter(new Expression(1), new Expression('val = 1')))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('sum(case when val = 1 then 1 else 0 end)')

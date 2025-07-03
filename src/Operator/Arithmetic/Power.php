@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Arithmetic;
+namespace BuckhamDuffy\Expressions\Operator\Arithmetic;
 
+use InvalidArgumentException;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class Power extends ArithmeticExpression
 {
@@ -23,17 +24,21 @@ class Power extends ArithmeticExpression
 
     protected function buildPowerFunctionChain(Grammar $grammar): string
     {
-        $expressions = $this->expressions($grammar);
+        $expressions = $this->expressions();
+
+        if (\count($expressions) < 2) {
+            throw new InvalidArgumentException('At least two values are required for the power operation.');
+        }
 
         // Build the initial expressions by using the two required parameters of the object.
-        $value0 = array_shift($expressions);
-        $value1 = array_shift($expressions);
-        $expression = "power({$value0}, {$value1})";
+        $value = array_shift($expressions);
+        $expression = (string) $this->stringize($grammar, $value);
 
         // For each remaining value call the power function again with the last result and the new value.
-        while (count($expressions) > 0) {
-            $value = array_shift($expressions);
-            $expression = "power({$expression}, $value)";
+        foreach ($expressions as $value) {
+            if ($value) {
+                $expression = \sprintf('power(%s, %s)', $expression, $this->stringize($grammar, $value));
+            }
         }
 
         return $expression;

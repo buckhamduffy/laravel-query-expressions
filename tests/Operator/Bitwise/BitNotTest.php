@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Bitwise\BitNot;
+use BuckhamDuffy\Expressions\Operator\Bitwise\BitNot;
 
 it('can bitwise NOT a column')
     ->expect(new BitNot('val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(~`val`)')

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\Conditional\Least;
+use BuckhamDuffy\Expressions\Function\Conditional\Least;
 
 it('can combine multiple columns')
     ->expect(new Least(['val1', 'val2', 'val3']))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
         $table->integer('val3');
@@ -28,7 +28,7 @@ it('can combine multiple expressions')
 
 it('can combine multiple columns and expressions')
     ->expect(new Least(['val1', 'val2', new Expression(3)]))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })

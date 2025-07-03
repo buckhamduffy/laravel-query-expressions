@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\Aggregate;
+namespace BuckhamDuffy\Expressions\Function\Aggregate;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class Count implements Expression
 {
@@ -15,15 +15,16 @@ class Count implements Expression
     public function __construct(
         private readonly string|Expression $value,
         private readonly bool $distinct = false,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar): string
     {
         $value = $this->stringize($grammar, $this->value);
 
         return match ($this->distinct) {
-            true => "count(distinct {$value})",
-            false => "count({$value})",
+            true  => \sprintf('count(distinct %s)', $value),
+            false => \sprintf('count(%s)', $value),
         };
     }
 }

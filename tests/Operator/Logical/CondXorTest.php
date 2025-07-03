@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
-use Tpetry\QueryExpressions\Operator\Logical\CondXor;
+use BuckhamDuffy\Expressions\Operator\Logical\CondXor;
 
 it('can combine multiple expressions with XOR')
     ->expect(new CondXor(new Expression('1 = 1'), new Expression('1 = 1')))

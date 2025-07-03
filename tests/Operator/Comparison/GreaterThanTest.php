@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Comparison\GreaterThan;
+use BuckhamDuffy\Expressions\Operator\Comparison\GreaterThan;
 
 it('can compare two columns by greater than check')
     ->expect(new GreaterThan('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     }, options: [
@@ -31,7 +31,7 @@ it('can compare two expressions by greater than check')
 
 it('can compare an expression and a column by greater than check')
     ->expect(new GreaterThan('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     }, options: [
         'sqlsrv' => ['position' => 'where'],
@@ -43,7 +43,7 @@ it('can compare an expression and a column by greater than check')
 
 it('can compare a column and an expression by greater than check')
     ->expect(new GreaterThan(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     }, options: [
         'sqlsrv' => ['position' => 'where'],

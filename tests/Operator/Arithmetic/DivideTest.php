@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Arithmetic\Divide;
+use BuckhamDuffy\Expressions\Operator\Arithmetic\Divide;
 
 it('can divide two columns')
     ->expect(new Divide('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -27,7 +27,7 @@ it('can divide two expressions')
 
 it('can divide an expression and a column')
     ->expect(new Divide('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(`val` / 0)')
@@ -37,7 +37,7 @@ it('can divide an expression and a column')
 
 it('can divide a column and an expression')
     ->expect(new Divide(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(0 / `val`)')
@@ -47,7 +47,7 @@ it('can divide a column and an expression')
 
 it('can divide variadic values')
     ->expect(new Divide(new Expression(0), 'val1', 'val2', new Expression(1)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })

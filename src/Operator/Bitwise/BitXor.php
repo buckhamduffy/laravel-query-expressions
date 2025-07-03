@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Bitwise;
+namespace BuckhamDuffy\Expressions\Operator\Bitwise;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class BitXor implements Expression
 {
@@ -17,7 +17,8 @@ class BitXor implements Expression
     public function __construct(
         private readonly string|Expression $value1,
         private readonly string|Expression $value2,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar)
     {
@@ -26,7 +27,7 @@ class BitXor implements Expression
 
         return match ($this->identify($grammar)) {
             'mariadb', 'mysql', 'sqlsrv' => "({$value1} ^ {$value2})",
-            'pgsql' => "({$value1} # {$value2})",
+            'pgsql'  => "({$value1} # {$value2})",
             'sqlite' => "(({$value1} | {$value2}) - ({$value1} & {$value2}))",
         };
     }

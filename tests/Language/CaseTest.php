@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Language\CaseGroup;
-use Tpetry\QueryExpressions\Language\CaseRule;
-use Tpetry\QueryExpressions\Tests\ConditionExpression;
+use BuckhamDuffy\Expressions\Language\CaseRule;
+use BuckhamDuffy\Expressions\Language\CaseGroup;
+use BuckhamDuffy\Expressions\Tests\ConditionExpression;
 
 it('can create create a case-expression with a single branch')
     ->expect(
@@ -25,7 +25,7 @@ it('can create create a case-expression with multiple branches')
         new CaseRule(new Expression(2), new ConditionExpression('1 = 1')),
         new CaseRule('val', new ConditionExpression('2 = 2')),
     ]))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(case when 1 = 1 then 2 when 2 = 2 then `val` end)')
@@ -41,7 +41,7 @@ it('can create create a case-expression with multiple branches and expression de
         ],
         new Expression('4'),
     ))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(case when 1 = 1 then 2 when 2 = 2 then `val` else 4 end)')
@@ -57,7 +57,7 @@ it('can create create a case-expression with multiple branches and column defaul
         ],
         'val',
     ))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(case when 1 = 1 then 2 when 2 = 2 then `val` else `val` end)')

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\Aggregate\Min;
+use BuckhamDuffy\Expressions\Function\Aggregate\Min;
 
 it('can aggregate a column by MIN')
     ->expect(new Min('val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('min(`val`)')

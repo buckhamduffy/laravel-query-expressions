@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\Time;
+namespace BuckhamDuffy\Expressions\Function\Time;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
 
 class Now implements Expression
 {
@@ -19,7 +19,7 @@ class Now implements Expression
         // SQLite: The expression needs to be enclosed by parentheses to be used as a default value in create table statements.
         return match ($this->identify($grammar)) {
             'mariadb', 'mysql', 'sqlite' => '(current_timestamp)',
-            'pgsql' => 'statement_timestamp()',
+            'pgsql'  => 'statement_timestamp()',
             'sqlsrv' => 'current_timestamp',
         };
     }

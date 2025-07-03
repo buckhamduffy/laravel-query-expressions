@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Bitwise\BitXor;
+use BuckhamDuffy\Expressions\Operator\Bitwise\BitXor;
 
 it('can bitwise XOR two columns')
     ->expect(new BitXor('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -27,7 +27,7 @@ it('can bitwise XOR two expressions')
 
 it('can bitwise XOR an expression and a column')
     ->expect(new BitXor('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(`val` ^ 0)')
@@ -37,7 +37,7 @@ it('can bitwise XOR an expression and a column')
 
 it('can bitwise XOR a column and an expression')
     ->expect(new BitXor(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(0 ^ `val`)')

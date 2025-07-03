@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Arithmetic;
+namespace BuckhamDuffy\Expressions\Operator\Arithmetic;
 
 class Subtract extends ArithmeticExpression
 {

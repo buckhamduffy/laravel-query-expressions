@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\String\Upper;
+use BuckhamDuffy\Expressions\Function\String\Upper;
 
 it('can uppercase a column')
     ->expect(new Upper('val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('val');
     })
     ->toBeMysql('(upper(`val`))')

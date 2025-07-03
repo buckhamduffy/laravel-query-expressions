@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
-use Tpetry\QueryExpressions\Operator\Logical\CondNot;
+use BuckhamDuffy\Expressions\Operator\Logical\CondNot;
 
 it('can negate an expression with NOT')
     ->expect(new CondNot(new Expression('1 = 1')))

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Language\Cast;
+use BuckhamDuffy\Expressions\Language\Cast;
 
 it('can cast a column to an int')
     ->expect(new Cast('val', 'int'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('val');
     })
     ->toBeMysql('cast(`val` as signed)')
@@ -26,7 +26,7 @@ it('can cast an expression to an int')
 
 it('can cast a column to a bigint')
     ->expect(new Cast('val', 'bigint'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('val');
     })
     ->toBeMysql('cast(`val` as signed)')
@@ -44,7 +44,7 @@ it('can cast an expression to a bigint')
 
 it('can cast a column to a float')
     ->expect(new Cast('val', 'float'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('val');
     })
     ->toBeMysql('((`val`)*1.0)')
@@ -62,7 +62,7 @@ it('can cast an expression to a float')
 
 it('can cast a column to a double')
     ->expect(new Cast('val', 'double'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('val');
     })
     ->toBeMysql('((`val`)*1.0)')

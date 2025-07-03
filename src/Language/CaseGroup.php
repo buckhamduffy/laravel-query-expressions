@@ -2,37 +2,70 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Language;
+namespace BuckhamDuffy\Expressions\Language;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\ConditionExpression;
 
 class CaseGroup implements Expression
 {
-    use IdentifiesDriver;
     use StringizeExpression;
 
+    private ?string $alias = null;
+
     /**
-     * @param  non-empty-array<int, CaseRule>  $when
+     * @param array<int, CaseRule> $when
      */
-    public function __construct(
-        private readonly array $when,
-        private readonly string|Expression|null $else = null,
-    ) {}
+    public function __construct(private array $when = [], private string|Expression|null $else = null)
+    {
+    }
+
+    /**
+     * @param array<int, CaseRule> $when
+     */
+    public static function make(array $when = [], string|Expression|null $else = null): self
+    {
+        return new self($when, $else);
+    }
+
+    public function when(ConditionExpression $condition, string|Expression $result): self
+    {
+        $this->when[] = new CaseRule($result, $condition);
+
+        return $this;
+    }
+
+    public function then(string|Expression|null $else): self
+    {
+        $this->else = $else;
+
+        return $this;
+    }
+
+    public function alias(?string $alias): self
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
 
     public function getValue(Grammar $grammar): string
     {
-        $conditions = array_map(
-            callback: fn ($expression) => $this->stringize($grammar, $expression),
-            array: $this->when,
-        );
-        $conditions = implode(' ', $conditions);
+        $conditions = collect($this->when)
+            ->map(fn (CaseRule $rule) => $this->stringize($grammar, $rule))
+            ->join(' ');
 
-        return match ($this->else) {
-            null => "(case {$conditions} end)",
-            default => "(case {$conditions} else {$this->stringize($grammar, $this->else)} end)",
+        $result = match ($this->else) {
+            null    => \sprintf('(case %s end)', $conditions),
+            default => \sprintf('(case %s else %s end)', $conditions, $this->stringize($grammar, $this->else)),
         };
+
+        if (!$this->alias) {
+            return $result;
+        }
+
+        return \sprintf('%s as %s', $result, $this->alias);
     }
 }

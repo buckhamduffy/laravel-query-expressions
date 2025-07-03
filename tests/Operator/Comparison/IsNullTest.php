@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Comparison\IsNull;
+use BuckhamDuffy\Expressions\Operator\Comparison\IsNull;
 
 it('can check an expression')
     ->expect(new IsNull(new Expression(42)))
@@ -18,7 +18,7 @@ it('can check an expression')
 
 it('can check a column')
     ->expect(new IsNull('val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     }, options: [
         'sqlsrv' => ['position' => 'where'],

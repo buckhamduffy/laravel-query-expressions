@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Tpetry\QueryExpressions\Value\Number;
+use BuckhamDuffy\Expressions\Value\Number;
 
 it('can store an integer')
     ->expect(new Number(10))

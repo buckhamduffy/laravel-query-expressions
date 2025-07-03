@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Function\Aggregate;
+namespace BuckhamDuffy\Expressions\Function\Aggregate;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 /**
  * @internal
@@ -17,14 +17,15 @@ abstract class AggregateExpression implements Expression
 
     public function __construct(
         private readonly string|Expression $value,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar): string
     {
         $value = $this->stringize($grammar, $this->value);
         $aggregate = $this->aggregate();
 
-        return "{$aggregate}({$value})";
+        return \sprintf('%s(%s)', $aggregate, $value);
     }
 
     abstract protected function aggregate(): string;

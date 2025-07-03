@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Comparison;
+namespace BuckhamDuffy\Expressions\Operator\Comparison;
 
+use BuckhamDuffy\Expressions\Operator\OperatorExpression;
 use Illuminate\Contracts\Database\Query\ConditionExpression;
-use Tpetry\QueryExpressions\Operator\OperatorExpression;
 
 class GreaterThan extends OperatorExpression implements ConditionExpression
 {

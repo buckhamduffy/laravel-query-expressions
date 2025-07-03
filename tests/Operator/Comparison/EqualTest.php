@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Comparison\Equal;
+use BuckhamDuffy\Expressions\Operator\Comparison\Equal;
 
 it('can compare two columns by equality check')
     ->expect(new Equal('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     }, options: [
@@ -31,7 +31,7 @@ it('can compare two expressions by equality check')
 
 it('can compare an expression and a column by equality check')
     ->expect(new Equal('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     }, options: [
         'sqlsrv' => ['position' => 'where'],
@@ -43,7 +43,7 @@ it('can compare an expression and a column by equality check')
 
 it('can compare a column and an expression by equality check')
     ->expect(new Equal(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     }, options: [
         'sqlsrv' => ['position' => 'where'],

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Bitwise\BitAnd;
+use BuckhamDuffy\Expressions\Operator\Bitwise\BitAnd;
 
 it('can bitwise AND two columns')
     ->expect(new BitAnd('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -27,7 +27,7 @@ it('can bitwise AND two expressions')
 
 it('can bitwise AND an expression and a column')
     ->expect(new BitAnd('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(`val` & 0)')
@@ -37,7 +37,7 @@ it('can bitwise AND an expression and a column')
 
 it('can bitwise AND a column and an expression')
     ->expect(new BitAnd(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(0 & `val`)')

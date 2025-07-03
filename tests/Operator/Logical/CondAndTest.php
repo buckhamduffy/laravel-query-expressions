@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
-use Tpetry\QueryExpressions\Operator\Logical\CondAnd;
+use BuckhamDuffy\Expressions\Operator\Logical\CondAnd;
 
 it('can combine multiple expressions with AND')
     ->expect(new CondAnd(new Expression('1 = 1'), new Expression('1 = 1')))

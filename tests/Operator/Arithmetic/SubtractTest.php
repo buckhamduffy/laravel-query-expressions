@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Operator\Arithmetic\Subtract;
+use BuckhamDuffy\Expressions\Operator\Arithmetic\Subtract;
 
 it('can subtract two columns')
     ->expect(new Subtract('val1', 'val2'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })
@@ -27,7 +27,7 @@ it('can subtract two expressions')
 
 it('can subtract an expression and a column')
     ->expect(new Subtract('val', new Expression(0)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(`val` - 0)')
@@ -37,7 +37,7 @@ it('can subtract an expression and a column')
 
 it('can subtract a column and an expression')
     ->expect(new Subtract(new Expression(0), 'val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('(0 - `val`)')
@@ -47,7 +47,7 @@ it('can subtract a column and an expression')
 
 it('can subtract variadic values')
     ->expect(new Subtract(new Expression(0), 'val1', 'val2', new Expression(1)))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val1');
         $table->integer('val2');
     })

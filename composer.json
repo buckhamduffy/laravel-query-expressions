@@ -1,5 +1,5 @@
 {
-    "name": "tpetry/laravel-query-expressions",
+    "name": "buckhamduffy/laravel-expressions",
     "description": "Database-independent Query Expressions as a replacement to DB::raw calls",
     "keywords": [
         "database",
@@ -7,12 +7,16 @@
         "laravel",
         "query"
     ],
-    "homepage": "https://github.com/tpetry/laravel-query-expressions",
+    "homepage": "https://github.com/buckhamduffy/laravel-query-expressions",
     "license": "MIT",
     "authors": [
         {
             "name": "tpetry",
             "email": "github@tpetry.me",
+            "role": "Developer"
+        },
+        {
+            "name": "Aaron Florey",
             "role": "Developer"
         }
     ],
@@ -23,8 +27,8 @@
         "illuminate/support": "^10.0|^11.0|^12.0"
     },
     "require-dev": {
+        "buckhamduffy/coding-standards": "^7",
         "larastan/larastan": "^2.7.0|^3.0",
-        "laravel/pint": "^1.0",
         "nunomaduro/collision": "^7.0|^8.0",
         "orchestra/testbench": "^8.0|^9.0|^10.0",
         "pestphp/pest": "^2.28.1|^3.0.0",
@@ -38,12 +42,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Tpetry\\QueryExpressions\\": "src"
+            "BuckhamDuffy\\Expressions\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tpetry\\QueryExpressions\\Tests\\": "tests"
+            "BuckhamDuffy\\Expressions\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -51,7 +55,7 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
+        "format": "vendor/bin/ecs"
     },
     "config": {
         "sort-packages": true,

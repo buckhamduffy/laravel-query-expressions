@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Bitwise;
+namespace BuckhamDuffy\Expressions\Operator\Bitwise;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Grammar;
-use Tpetry\QueryExpressions\Concerns\IdentifiesDriver;
-use Tpetry\QueryExpressions\Concerns\StringizeExpression;
+use Illuminate\Contracts\Database\Query\Expression;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class ShiftRight implements Expression
 {
@@ -17,7 +17,8 @@ class ShiftRight implements Expression
     public function __construct(
         private readonly string|Expression $value,
         private readonly string|Expression $times,
-    ) {}
+    ) {
+    }
 
     public function getValue(Grammar $grammar)
     {

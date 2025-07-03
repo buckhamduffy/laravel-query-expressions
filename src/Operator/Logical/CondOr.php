@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tpetry\QueryExpressions\Operator\Logical;
+namespace BuckhamDuffy\Expressions\Operator\Logical;
 
 class CondOr extends LogicalExpression
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
-use Tpetry\QueryExpressions\Function\Aggregate\Count;
+use BuckhamDuffy\Expressions\Function\Aggregate\Count;
 
 it('can aggregate a column by COUNT')
     ->expect(new Count('val'))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('count(`val`)')
@@ -18,7 +18,7 @@ it('can aggregate a column by COUNT')
 
 it('can aggregate a column by COUNT with DISTINCT')
     ->expect(new Count('val', true))
-    ->toBeExecutable(function (Blueprint $table) {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('count(distinct `val`)')

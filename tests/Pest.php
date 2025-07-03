@@ -2,23 +2,29 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Pest\Expectation;
 use PHPUnit\Framework\Assert;
-use Tpetry\QueryExpressions\Tests\TestCase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use BuckhamDuffy\Expressions\Tests\TestCase;
 
 uses(
     TestCase::class,
 )->in(__DIR__);
 
-expect()->extend('toBeExecutable', function (?Closure $migration = null, array $options = []): Expectation {
-    /** @var \Illuminate\Database\Connection $connection */
+expect()->extend('toBeExecutable', function(?Closure $migration = null, array $options = []): Expectation {
+    $skip = $options['skip'] ?? [];
+
+    /** @var Illuminate\Database\Connection $connection */
     $connection = DB::connection();
+
+    if (\in_array($connection->getDriverName(), $skip)) {
+        return $this;
+    }
 
     $table = null;
     if (filled($migration)) {
-        $table = 'example_'.mt_rand();
+        $table = 'example_' . mt_rand();
         Schema::create($table, $migration(...));
     }
 
@@ -33,7 +39,7 @@ expect()->extend('toBeExecutable', function (?Closure $migration = null, array $
     return $this;
 });
 
-expect()->extend('toBeMysql', function (string $expected): Expectation {
+expect()->extend('toBeMysql', function(string $expected): Expectation {
     if (DB::connection()->getDriverName() === 'mysql') {
         Assert::assertSame($expected, $this->value->getValue(DB::connection()->getQueryGrammar()));
     }
@@ -41,7 +47,7 @@ expect()->extend('toBeMysql', function (string $expected): Expectation {
     return $this;
 });
 
-expect()->extend('toBePgsql', function (string $expected): Expectation {
+expect()->extend('toBePgsql', function(string $expected): Expectation {
     if (DB::connection()->getDriverName() === 'pgsql') {
         Assert::assertSame($expected, $this->value->getValue(DB::connection()->getQueryGrammar()));
     }
@@ -49,7 +55,7 @@ expect()->extend('toBePgsql', function (string $expected): Expectation {
     return $this;
 });
 
-expect()->extend('toBeSqlite', function (string $expected): Expectation {
+expect()->extend('toBeSqlite', function(string $expected): Expectation {
     if (DB::connection()->getDriverName() === 'sqlite') {
         Assert::assertSame($expected, $this->value->getValue(DB::connection()->getQueryGrammar()));
     }
@@ -57,7 +63,7 @@ expect()->extend('toBeSqlite', function (string $expected): Expectation {
     return $this;
 });
 
-expect()->extend('toBeSqlsrv', function (string $expected): Expectation {
+expect()->extend('toBeSqlsrv', function(string $expected): Expectation {
     if (DB::connection()->getDriverName() === 'sqlsrv') {
         Assert::assertSame($expected, $this->value->getValue(DB::connection()->getQueryGrammar()));
     }
@@ -65,9 +71,9 @@ expect()->extend('toBeSqlsrv', function (string $expected): Expectation {
     return $this;
 });
 
-function skipOnMariaBefore(string $version)
+function skipOnMariaBefore(string $version): void
 {
-    /** @var \Illuminate\Database\Connection $connection */
+    /** @var Illuminate\Database\Connection $connection */
     $connection = DB::connection();
 
     if ($connection->getDriverName() !== 'mysql') {
@@ -82,7 +88,7 @@ function skipOnMariaBefore(string $version)
 
 function skipOnMysqlBefore(string $version): void
 {
-    /** @var \Illuminate\Database\Connection $connection */
+    /** @var Illuminate\Database\Connection $connection */
     $connection = DB::connection();
 
     if ($connection->getDriverName() !== 'mysql') {
@@ -90,14 +96,14 @@ function skipOnMysqlBefore(string $version): void
     }
 
     $actual = $connection->scalar('select version()');
-    if (! str_contains($actual, 'MariaDB') && version_compare($actual, $version, '<')) {
+    if (!str_contains($actual, 'MariaDB') && version_compare($actual, $version, '<')) {
         test()->markTestSkipped("The MariaDB version must be at least {$version}.");
     }
 }
 
 function skipOnPgsqlBefore(string $version): void
 {
-    /** @var \Illuminate\Database\Connection $connection */
+    /** @var Illuminate\Database\Connection $connection */
     $connection = DB::connection();
 
     if ($connection->getDriverName() !== 'pgsql') {
@@ -112,7 +118,7 @@ function skipOnPgsqlBefore(string $version): void
 
 function skipOnSqliteBefore(string $version): void
 {
-    /** @var \Illuminate\Database\Connection $connection */
+    /** @var Illuminate\Database\Connection $connection */
     $connection = DB::connection();
 
     if ($connection->getDriverName() !== 'sqlite') {
@@ -127,7 +133,7 @@ function skipOnSqliteBefore(string $version): void
 
 function skipOnSqlsrvBefore(string $version): void
 {
-    /** @var \Illuminate\Database\Connection $connection */
+    /** @var Illuminate\Database\Connection $connection */
     $connection = DB::connection();
 
     if ($connection->getDriverName() !== 'sqlsrv') {
