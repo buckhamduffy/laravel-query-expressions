@@ -1,6 +1,14 @@
 # Changelog
 
 - - -
+## v1.7.0 - 2025-07-23
+#### Chore
+- update .editorconfig - (6fe19dc) - BuckhamBot
+#### Features
+- add date_format and concat_ws - (5416886) - Aaron Florey
+
+- - -
+
 ## v1.6.1 - 2025-07-03
 #### Bug Fixes
 - OrValues should be Conditional - (36b66b8) - Aaron Florey
