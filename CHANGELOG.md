@@ -1,6 +1,12 @@
 # Changelog
 
 - - -
+## v1.8.0 - 2025-12-03
+#### Features
+- add new expressions - (8d0fdb0) - Aaron Florey
+
+- - -
+
 ## v1.7.0 - 2025-07-23
 #### Chore
 - update .editorconfig - (6fe19dc) - BuckhamBot
