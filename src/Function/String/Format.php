@@ -25,7 +25,7 @@ class Format implements Expression
         $expression = $this->stringize($grammar, $this->expression);
 
         return match ($this->identify($grammar)) {
-            'mariadb', 'mysql' => \sprintf('(FORMAT(%s, %d)', $expression, $this->decimals),
+            'mariadb', 'mysql' => \sprintf('(FORMAT(%s, %d))', $expression, $this->decimals),
             default => throw new RuntimeException('Format function is not supported for this database driver.'),
         };
     }
