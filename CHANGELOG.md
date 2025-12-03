@@ -1,6 +1,12 @@
 # Changelog
 
 - - -
+## v1.8.1 - 2025-12-03
+#### Bug Fixes
+- missing bracket in Format - (c2879be) - Aaron Florey
+
+- - -
+
 ## v1.8.0 - 2025-12-03
 #### Features
 - add new expressions - (8d0fdb0) - Aaron Florey
