@@ -6,7 +6,6 @@ use Illuminate\Database\Grammar;
 use Illuminate\Contracts\Database\Query\Expression;
 use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
 use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
-use Illuminate\Contracts\Database\Query\ConditionExpression;
 
 class IfElse implements Expression
 {
@@ -14,9 +13,9 @@ class IfElse implements Expression
     use StringizeExpression;
 
     public function __construct(
-        private readonly ConditionExpression $condition,
-        private readonly Expression $firstValue,
-        private readonly Expression $secondValue
+        private readonly Expression|string $condition,
+        private readonly Expression|string $firstValue,
+        private readonly Expression|string $secondValue
     )
     {
     }

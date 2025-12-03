@@ -3,61 +3,6 @@ name: Testing
 on: [push, pull_request]
 
 jobs:
-  maria10_3:
-    name: MariaDB 10.3
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: 10.3
-  maria10_4:
-    name: MariaDB 10.4
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: 10.4
-  maria10_5:
-    name: MariaDB 10.5
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: 10.5
-  maria10_6:
-    name: MariaDB 10.6
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: 10.6
-  maria10_7:
-    name: MariaDB 10.7
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: 10.7
-  maria10_8:
-    name: MariaDB 10.8
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: 10.8
-  maria10_9:
-    name: MariaDB 10.9
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: 10.9
-  maria10_10:
-    name: MariaDB 10.10
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: "10.10"
-  maria11_0:
-    name: MariaDB 11.0
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: "11.0"
-  maria11_1:
-    name: MariaDB 11.1
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: "11.1"
-  maria11_2:
-    name: MariaDB 11.2
-    uses: ./.github/workflows/tests-maria.yml
-    with:
-      version: "11.2"
   maria11_3:
     name: MariaDB 11.3
     uses: ./.github/workflows/tests-maria.yml
@@ -69,102 +14,33 @@ jobs:
     with:
       version: "11.4"
 
-  mysql5_7:
-    name: MySQL 5.7
-    uses: ./.github/workflows/tests-mysql.yml
-    with:
-      version: "5.7"
-  mysql8_0:
-    name: MySQL 8.0
-    uses: ./.github/workflows/tests-mysql.yml
-    with:
-      version: "8.0"
-  mysql8_1:
-    name: MySQL 8.1
-    uses: ./.github/workflows/tests-mysql.yml
-    with:
-      version: "8.1"
-  mysql8_2:
-    name: MySQL 8.2
-    uses: ./.github/workflows/tests-mysql.yml
-    with:
-      version: "8.2"
   mysql8_3:
     name: MySQL 8.3
     uses: ./.github/workflows/tests-mysql.yml
     with:
       version: "8.3"
+
   mysql8_4:
     name: MySQL 8.4
     uses: ./.github/workflows/tests-mysql.yml
     with:
       version: "8.4"
 
-  pgsql10:
-    name: PostgreSQL 10
-    uses: ./.github/workflows/tests-pgsql.yml
-    with:
-      version: 10
-  pgsql11:
-    name: PostgreSQL 11
-    uses: ./.github/workflows/tests-pgsql.yml
-    with:
-      version: 11
-  pgsql12:
-    name: PostgreSQL 12
-    uses: ./.github/workflows/tests-pgsql.yml
-    with:
-      version: 12
-  pgsql13:
-    name: PostgreSQL 13
-    uses: ./.github/workflows/tests-pgsql.yml
-    with:
-      version: 13
-  pgsql14:
-    name: PostgreSQL 14
-    uses: ./.github/workflows/tests-pgsql.yml
-    with:
-      version: 14
   pgsql15:
-    name: PostgreSQL 15
+    name: PostgreSQL 17
     uses: ./.github/workflows/tests-pgsql.yml
     with:
-      version: 15
+      version: 17
   pgsql16:
-    name: PostgreSQL 16
+    name: PostgreSQL 18
     uses: ./.github/workflows/tests-pgsql.yml
     with:
-      version: 16
+      version: 18
 
   sqlite:
     name: SQLite
     uses: ./.github/workflows/tests-sqlite.yml
 
-  sqlsrv2017_ga:
-    name: Microsoft SQL Server 2017 (GA)
-    uses: ./.github/workflows/tests-sqlsrv.yml
-    with:
-      version: 2017-GA-ubuntu
-  sqlsrv2017_latest:
-    name: Microsoft SQL Server 2017 (Latest)
-    uses: ./.github/workflows/tests-sqlsrv.yml
-    with:
-      version: 2017-latest
-  sqlsrv2019_ga:
-    name: Microsoft SQL Server 2019 (GA)
-    uses: ./.github/workflows/tests-sqlsrv.yml
-    with:
-      version: 2019-GA-ubuntu-16.04
-  sqlsrv2019_latest:
-    name: Microsoft SQL Server 2019 (Latest)
-    uses: ./.github/workflows/tests-sqlsrv.yml
-    with:
-      version: 2019-latest
-  sqlsrv2022_ga:
-    name: Microsoft SQL Server 2022 (GA)
-    uses: ./.github/workflows/tests-sqlsrv.yml
-    with:
-      version: 2022-RTM-GDR1-ubuntu-20.04
   sqlsrv2022_latest:
     name: Microsoft SQL Server 2022 (Latest)
     uses: ./.github/workflows/tests-sqlsrv.yml

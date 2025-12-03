@@ -12,7 +12,6 @@ jobs:
       matrix:
         php: [8.3, 8.4]
         laravel: [11.*, 12.*]
-        stability: [prefer-lowest, prefer-stable]
         exclude:
           # Laravel 12.x only supports PHP ^8.2
           - laravel: 12.*
@@ -32,18 +31,15 @@ jobs:
           extensions: pdo
           coverage: none
 
+      - uses: ramsey/composer-install@v3
+
       - name: Setup problem matchers
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Install dependencies
-        run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
-
-      - name: List Installed Dependencies
-        run: composer show -D
+        run: composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
 
       - name: Execute tests
         run: vendor/bin/pest
