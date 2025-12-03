@@ -2,23 +2,23 @@
 
 namespace BuckhamDuffy\Expressions\Function\String;
 
-use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
-use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
+use Illuminate\Database\Grammar;
 use BuckhamDuffy\Expressions\Value\Value;
 use Illuminate\Contracts\Database\Query\Expression;
-use Illuminate\Database\Grammar;
+use BuckhamDuffy\Expressions\Concerns\IdentifiesDriver;
+use BuckhamDuffy\Expressions\Concerns\StringizeExpression;
 
 class ConcatWs implements Expression
 {
-    use StringizeExpression;
     use IdentifiesDriver;
+    use StringizeExpression;
 
     /**
-     * @param array<int, string|Expression> $expressions
+     * @param array<int, Expression|string> $expressions
      */
     public function __construct(
         private string $separator,
-        private array  $expressions,
+        private array $expressions,
     )
     {
     }
