@@ -8,7 +8,7 @@ use BuckhamDuffy\Expressions\Function\String\ConcatWs;
 
 it('concats values with a separator')
     ->expect(new ConcatWs('-', ['first', 'second', new Expression("'third'")]))
-    ->toBeExecutable(function (Blueprint $table): void {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('first');
         $table->string('second');
     })

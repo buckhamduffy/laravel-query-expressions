@@ -8,7 +8,7 @@ use BuckhamDuffy\Expressions\Function\String\Concat;
 
 it('wraps another expression')
     ->expect(new Wrap(new Concat(['first', 'last'])))
-    ->toBeExecutable(function (Blueprint $table): void {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('first');
         $table->string('last');
     })

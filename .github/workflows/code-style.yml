@@ -5,18 +5,18 @@ on: [push, pull_request]
 jobs:
   php-code-styling:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: "8.4"
+          extensions: pdo
           coverage: none
 
-      - name: Install composer dependencies
-        uses: ramsey/composer-install@v2
+      - uses: ramsey/composer-install@v3
 
       - name: Run code style checks
         run: ./vendor/bin/ecs check --ansi --no-progress-bar --no-interaction

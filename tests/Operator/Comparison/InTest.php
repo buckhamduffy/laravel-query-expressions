@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Schema\Blueprint;
-use BuckhamDuffy\Expressions\Operator\Comparison\In;
 use BuckhamDuffy\Expressions\Value\Number;
+use BuckhamDuffy\Expressions\Operator\Comparison\In;
 
 it('checks value in list of values')
     ->expect(
@@ -13,7 +13,7 @@ it('checks value in list of values')
             ->value(new Number(2))
             ->value(new Number(3))
     )
-    ->toBeExecutable(function (Blueprint $table): void {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->integer('val');
     })
     ->toBeMysql('`val` IN (1,2,3)')

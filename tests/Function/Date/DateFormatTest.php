@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Schema\Blueprint;
-use BuckhamDuffy\Expressions\Function\Date\DateFormat;
 use BuckhamDuffy\Expressions\Function\Time\Now;
+use BuckhamDuffy\Expressions\Function\Date\DateFormat;
 
 it('formats a column with a date pattern')
     ->expect(new DateFormat('created_at', '%Y-%m-%d'))
-    ->toBeExecutable(function (Blueprint $table): void {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->timestamp('created_at');
     })
     ->toBeMysql("DATE_FORMAT(`created_at`, '%Y-%m-%d')")

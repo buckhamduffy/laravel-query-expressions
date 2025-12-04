@@ -1,0 +1,71 @@
+name: Run database tests
+description: Setup PHP, install dependencies, and execute Pest for a given Laravel/database combination.
+
+inputs:
+  php-version:
+    description: PHP version to install.
+    required: true
+  laravel-version:
+    description: Laravel version constraint to require.
+    required: true
+  db-connection:
+    description: Database connection driver to use.
+    required: true
+  db-database:
+    description: Optional database name.
+    required: false
+    default: ""
+  db-username:
+    description: Optional database username.
+    required: false
+    default: ""
+  db-password:
+    description: Optional database password.
+    required: false
+    default: ""
+  db-collation:
+    description: Optional database collation.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php-version }}
+        extensions: pdo
+        coverage: none
+
+    - uses: ramsey/composer-install@v3
+
+    - name: Setup problem matchers
+      shell: bash
+      run: |
+        echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+        echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Install dependencies
+      shell: bash
+      run: composer require "laravel/framework:${{ inputs.laravel-version }}" --no-interaction --no-update
+
+    - name: Execute tests
+      shell: bash
+      env:
+        INPUT_DB_CONNECTION: ${{ inputs.db-connection }}
+        INPUT_DB_DATABASE: ${{ inputs.db-database }}
+        INPUT_DB_USERNAME: ${{ inputs.db-username }}
+        INPUT_DB_PASSWORD: ${{ inputs.db-password }}
+        INPUT_DB_COLLATION: ${{ inputs.db-collation }}
+      run: |
+        export DB_CONNECTION="${INPUT_DB_CONNECTION}"
+        [[ -n "${INPUT_DB_DATABASE}" ]] && export DB_DATABASE="${INPUT_DB_DATABASE}"
+        [[ -n "${INPUT_DB_USERNAME}" ]] && export DB_USERNAME="${INPUT_DB_USERNAME}"
+        [[ -n "${INPUT_DB_PASSWORD}" ]] && export DB_PASSWORD="${INPUT_DB_PASSWORD}"
+        [[ -n "${INPUT_DB_COLLATION}" ]] && export DB_COLLATION="${INPUT_DB_COLLATION}"
+
+        vendor/bin/pest

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
+use BuckhamDuffy\Expressions\Value\Value;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Query\Expression as RawExpression;
-use BuckhamDuffy\Expressions\Function\Aggregate\Count;
-use BuckhamDuffy\Expressions\Function\Aggregate\CountFilter;
-use BuckhamDuffy\Expressions\Function\Conditional\Coalesce;
-use BuckhamDuffy\Expressions\Function\Conditional\IfElse;
 use BuckhamDuffy\Expressions\Language\Alias;
 use BuckhamDuffy\Expressions\Operator\Arithmetic\Add;
+use BuckhamDuffy\Expressions\Function\Aggregate\Count;
 use BuckhamDuffy\Expressions\Operator\Comparison\Equal;
-use BuckhamDuffy\Expressions\Value\Value;
+use BuckhamDuffy\Expressions\Function\Conditional\IfElse;
+use Illuminate\Database\Query\Expression as RawExpression;
+use BuckhamDuffy\Expressions\Function\Conditional\Coalesce;
+use BuckhamDuffy\Expressions\Function\Aggregate\CountFilter;
 
 it('can compose multiple expressions together')
     ->expect(
@@ -30,7 +30,7 @@ it('can compose multiple expressions together')
             'score'
         )
     )
-    ->toBeExecutable(function (Blueprint $table): void {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->string('status');
     })
     ->toBeMysql("IF((`status` = 'vip'), (100 + count(*)), coalesce(sum((`status` = 'active')), 0)) as `score`")

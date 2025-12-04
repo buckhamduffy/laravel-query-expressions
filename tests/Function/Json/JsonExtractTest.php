@@ -7,7 +7,7 @@ use BuckhamDuffy\Expressions\Function\Json\JsonExtract;
 
 it('can extract a scalar value from json')
     ->expect(new JsonExtract('data', '$.user.name'))
-    ->toBeExecutable(function (Blueprint $table): void {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->json('data');
     })
     ->toBeMysql("JSON_UNQUOTE(JSON_EXTRACT(`data`, '$.user.name'))")
@@ -17,7 +17,7 @@ it('can extract a scalar value from json')
 
 it('can extract json without unquoting')
     ->expect(new JsonExtract('data', '$.items[0].price', unquote: false))
-    ->toBeExecutable(function (Blueprint $table): void {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->json('data');
     })
     ->toBeMysql("JSON_EXTRACT(`data`, '$.items[0].price')")

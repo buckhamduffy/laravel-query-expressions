@@ -7,7 +7,7 @@ use BuckhamDuffy\Expressions\Function\Time\TimestampDiff;
 
 it('calculates timestamp differences')
     ->expect(new TimestampDiff('MINUTE', 'started_at', 'ended_at'))
-    ->toBeExecutable(function (Blueprint $table): void {
+    ->toBeExecutable(function(Blueprint $table): void {
         $table->timestamp('started_at');
         $table->timestamp('ended_at');
     })
