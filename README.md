@@ -59,44 +59,13 @@ Whenever an expression class needs a `string|Expression` parameter, you can pass
 > The generated SQL statements of the examples are only for explanatory purposes.
 > The real ones will be automatically tailored to your database using proper quoting and its specific syntax.
 
-### Language
+### Documentation
 
-#### Values
+Full documentation now lives in `docs/`. Start at [docs/README.md](docs/README.md) for an index of everything we ship:
 
-As stated before, an expression is always a column name.
-But if you want to e.g. do an equality check, you may want to compare something to a specific value.
-That's where you should use the `Value` class.
-Its values will always be automatically escaped within the query.
-
-```php
-use BuckhamDuffy\Expressions\Value\Value;
-
-new Value(42);
-new Value("Robert'); DROP TABLE students;--");
-```
-
-> **Note**
-> The `Value` class in isolation is not that usefull.
-> But it will be used more in the next examples.
-
-#### Alias
-
-```php
-use Illuminate\Contracts\Database\Query\Expression;
-use BuckhamDuffy\Expressions\Language\Alias;
-use BuckhamDuffy\Expressions\Value\Value;
-
-new Alias(string|Expression $expression, string $name)
-
-User::select([
-    new Alias('last_modified_at', 'modification_date'),
-    new Alias(new Value(21), 'min_age_threshold'),
-])->get();
-```
-
-> **Note**
-> The `Alias` class in isolation is not that usefull because Eloquent can already do this.
-> It's useful in conjunction with other expressions though.
+- Functions (aggregate, comparison, conditional, date, JSON, math, string, time): [docs/Function](docs/Function)
+- Operators (arithmetic, bitwise, comparison, logical): [docs/Operator](docs/Operator)
+- Language helpers (aliasing, values, etc.): [docs/Language.md](docs/Language.md)
 
 ## Changelog
 

@@ -31,6 +31,15 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Install SQL Server ODBC driver (linux)
+      if: ${{ inputs.db-connection == 'sqlsrv' }}
+      shell: bash
+      run: |
+        curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+        sudo add-apt-repository https://packages.microsoft.com/ubuntu/22.04/prod
+        sudo apt-get update
+        sudo ACCEPT_EULA=Y apt-get install -y msodbcsql18 unixodbc-dev
+
     - name: Checkout code
       uses: actions/checkout@v4
 
@@ -38,7 +47,8 @@ runs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ inputs.php-version }}
-        extensions: pdo
+        # Install SQL Server extensions only when needed; otherwise keep lean.
+        extensions: ${{ inputs.db-connection == 'sqlsrv' && 'pdo_sqlsrv, sqlsrv, pdo' || 'pdo' }}
         coverage: none
 
     - uses: ramsey/composer-install@v3
@@ -67,5 +77,12 @@ runs:
         [[ -n "${INPUT_DB_USERNAME}" ]] && export DB_USERNAME="${INPUT_DB_USERNAME}"
         [[ -n "${INPUT_DB_PASSWORD}" ]] && export DB_PASSWORD="${INPUT_DB_PASSWORD}"
         [[ -n "${INPUT_DB_COLLATION}" ]] && export DB_COLLATION="${INPUT_DB_COLLATION}"
+
+        # SQL Server requires encrypted connections on recent images; allow the
+        # self-signed cert from the container so the driver can connect.
+        if [[ "${DB_CONNECTION}" == "sqlsrv" ]]; then
+          export DB_ENCRYPT=true
+          export DB_TRUST_SERVER_CERTIFICATE=true
+        fi
 
         vendor/bin/pest

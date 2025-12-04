@@ -33,9 +33,12 @@ class SplitPart implements Expression
 
     private function pgsql(Grammar $grammar): string
     {
+        $string = $this->stringize($grammar, $this->string);
+        $string = \sprintf('CAST(%s AS text)', $string);
+
         $expr = \sprintf(
             'SPLIT_PART(%s, \'%s\', %d)',
-            $this->stringize($grammar, $this->string),
+            $string,
             $this->delimiter,
             $this->part,
         );

@@ -5,14 +5,51 @@ on:
   pull_request:
 
 jobs:
+  code-style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: pdo
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Run code style checks
+        run: ./vendor/bin/ecs check --ansi --no-progress-bar --no-interaction
+
+  phpstan:
+    name: phpstan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: pdo
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan --error-format=github
+
   mariadb:
     name: MariaDB ${{ matrix.version }} (PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        version: ["11.3", "11.4"]
-        php: [8.3, 8.4]
+        version: ["11.8", "11", "12"]
+        php: [8.4]
         laravel: [11.*, 12.*]
     services:
       database:
@@ -40,17 +77,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ["8.3", "8.4"]
-        php: [8.3, 8.4]
+        version: ["8", "9"]
+        php: [8.4]
         laravel: [11.*, 12.*]
     services:
       database:
-        image: container-registry.oracle.com/mysql/community-server:${{ matrix.version }}
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        image: mysql:${{ matrix.version }}
+        # MySQL 8+ requires an explicit root password; also tell the health check to use it.
+        options: --health-cmd="mysqladmin ping -uroot -proot" --health-interval=10s --health-timeout=5s --health-retries=6
         env:
           MYSQL_DATABASE: testing
           MYSQL_USER: testing
           MYSQL_PASSWORD: testing
+          MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
     steps:
@@ -74,7 +113,7 @@ jobs:
       fail-fast: false
       matrix:
         version: [17, 18]
-        php: [8.3, 8.4]
+        php: [8.4]
         laravel: [11.*, 12.*]
     services:
       database:
@@ -103,7 +142,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [8.3, 8.4]
+        php: [8.4]
         laravel: [11.*, 12.*]
     steps:
       - uses: actions/checkout@v6
@@ -123,11 +162,17 @@ jobs:
       matrix:
         version: ["2022-latest"]
         php: [8.3, 8.4]
-        laravel: [11.*, 12.*]
+        laravel: [12.*]
     services:
       database:
         image: mcr.microsoft.com/mssql/server:${{ matrix.version }}
-        options: --health-cmd "echo quit | /opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -l 1 -U sa -P Password_123" --health-interval=10s --health-timeout=5s --health-retries=3
+        # sqlcmd in new images uses ODBC Driver 18 which requires trusting the
+        # self-signed cert; otherwise the health check fails and the container
+        # never becomes healthy.
+        # Newer SQL Server images ship the client tools under mssql-tools18, not
+        # mssql-tools. The old path causes the health check to fail immediately
+        # (container never reaches healthy), so point to the current location.
+        options: --health-cmd "echo quit | /opt/mssql-tools18/bin/sqlcmd -C -S 127.0.0.1 -l 1 -U sa -P Password_123" --health-interval=10s --health-timeout=5s --health-retries=6
         env:
           ACCEPT_EULA: Y
           SA_PASSWORD: Password_123

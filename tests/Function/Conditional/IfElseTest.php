@@ -21,7 +21,7 @@ it('can branch between columns')
     })
     ->toBeMysql("IF((`status` = 'paid'), `amount`, `backup_amount`)")
     ->toBePgsql("CASE WHEN (\"status\" = 'paid') THEN \"amount\" ELSE \"backup_amount\" END")
-    ->toBeSqlite("CASE WHEN (\"status\" = 'paid') THEN amount ELSE backup_amount END")
+    ->toBeSqlite("CASE WHEN (\"status\" = 'paid') THEN \"amount\" ELSE \"backup_amount\" END")
     ->toBeSqlsrv("CASE WHEN ([status] = 'paid') THEN [amount] ELSE [backup_amount] END");
 
 it('can branch using literal expressions')

@@ -33,3 +33,34 @@ $timezone = new Alias(
     'tz'
 );
 ```
+
+## JsonAggregate
+Aggregates JSON values into an array: `JSON_ARRAYAGG` on MySQL/MariaDB, `json_agg` on PostgreSQL, and `json_group_array` on SQLite. SQL Server is not supported and will throw an `UnsupportedGrammarException`.
+
+```php
+use BuckhamDuffy\Expressions\Function\Json\JsonAggregate;
+use BuckhamDuffy\Expressions\Language\Alias;
+use App\Models\Order;
+
+$orders = Order::query()->select([
+    new Alias(new JsonAggregate('metadata', 'all_metadata'), 'all_metadata'),
+])->first();
+```
+
+## JsonObject
+Builds a JSON object from mixed columns and values: `JSON_OBJECT` on MySQL/MariaDB, `json_build_object` on PostgreSQL, and `json_object` on SQLite. SQL Server is not supported and will throw an `UnsupportedGrammarException`.
+
+```php
+use BuckhamDuffy\Expressions\Function\Json\JsonObject;
+use BuckhamDuffy\Expressions\Language\Alias;
+use BuckhamDuffy\Expressions\Value\Value;
+
+$customer = Customer::query()->select([
+    new Alias(
+        JsonObject::make()
+            ->item('name', 'full_name')
+            ->item('vip', new Value(true)),
+        'profile'
+    ),
+])->first();
+```

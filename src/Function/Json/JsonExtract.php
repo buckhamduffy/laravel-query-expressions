@@ -45,14 +45,21 @@ class JsonExtract implements Expression
             return \sprintf("json_extract(%s, '%s')", $json, $path);
         }
 
-        /**
-         * Convert '$.a.b[0]' -> '{a,b,0}' for #>/#>>.
-         * @var list<string> $parts
-         */
-        $parts = preg_split('~(?<=])\.|\.~', ltrim($path, '$.'), -1, \PREG_SPLIT_NO_EMPTY);
-        // strip [n] to n
-        $parts = array_map(fn ($p) => preg_replace('~\[(\d+)\]~', '$1', $p), $parts);
-        $pgPath = '{' . implode(',', array_map(fn ($p) => $p, $parts)) . '}';
+        /** Convert '$.a.b[0]' -> '{a,b,0}' for #>/#>>. */
+        $path = ltrim($path, '$.');
+        // Turn bracket notation into dotted indices so they are split into their own path parts.
+        $path = preg_replace('~\[(\d+)\]~', '.$1', $path);
+
+        if ($path === null) {
+            $path = '';
+        }
+
+        /** @var list<string> $parts */
+        $parts = array_values(array_filter(
+            explode('.', $path),
+            static fn (string $segment): bool => $segment !== ''
+        ));
+        $pgPath = '{' . implode(',', $parts) . '}';
 
         return $this->unquote ? \sprintf("%s #>> '%s'", $json, $pgPath) : \sprintf("%s #> '%s'", $json, $pgPath);
     }

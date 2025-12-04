@@ -11,4 +11,4 @@ it('can combine multiple columns')
         $table->integer('val');
     }, ['skip' => ['sqlite', 'sqlsrv']])
     ->toBeMysql('SUBSTRING_INDEX(SUBSTRING_INDEX(`val`, \'-\', 1), \'-\', -1)')
-    ->toBePgsql('SPLIT_PART("val", \'-\', 1)');
+    ->toBePgsql('SPLIT_PART(CAST("val" AS text), \'-\', 1)');
